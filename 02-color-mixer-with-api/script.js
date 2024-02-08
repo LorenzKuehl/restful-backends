@@ -8,6 +8,7 @@ const blue = document.getElementById("blue");
 const green = document.getElementById("green");
 const main = document.querySelector("main");
 const hex = document.getElementById("hex");
+const rndHexBtn = document.getElementById("randomHex");
 
 // Initial state
 let state = {
@@ -18,24 +19,39 @@ let state = {
 
 // Render function
 function render() {
-  // Update CSS variables
+  // Update CSS Variablen
   main.style.setProperty("--r", state.redRGB);
   main.style.setProperty("--g", state.greenRGB);
   main.style.setProperty("--b", state.blueRGB);
 
-  // Update Input Elements
+  // Update Input Elemente
   red.value = state.redRGB;
   green.value = state.greenRGB;
   blue.value = state.blueRGB;
 
-  // Calculate and update hexColor
+  // Berechnung vom Hex-Wert
   const hexR = state.redRGB.toString(16).padStart(2, "0");
   const hexG = state.greenRGB.toString(16).padStart(2, "0");
   const hexB = state.blueRGB.toString(16).padStart(2, "0");
   const hexColor = `#${hexR}${hexG}${hexB}`;
 
-  // Update the text content of the hex element
+  // Update vom text content des hex-elementes
   hex.textContent = hexColor;
+}
+
+//Action function
+function hexToRgb(hex) {
+  // # entfernen
+  hex = hex.replace(/^#/, "");
+
+  // Den Hexadezimal-Wert in seine Einzelteile zerlegen und auf die RGB-Werte verteilen
+  const bigint = parseInt(hex, 16);
+  state.redRGB = (bigint >> 16) & 255;
+  state.greenRGB = (bigint >> 8) & 255;
+  state.blueRGB = bigint & 255;
+
+  // Render
+  return render();
 }
 
 // Event listeners
@@ -51,6 +67,17 @@ green.addEventListener("change", function () {
 
 blue.addEventListener("change", function () {
   state.blueRGB = parseInt(blue.value);
+  render();
+});
+
+rndHexBtn.addEventListener("click", function () {
+  fetch("https://dummy-apis.netlify.app/api/color")
+    .then((response) => response.json())
+    .then((data) => {
+      const hexColorRnd = data.color;
+      hexToRgb(hexColorRnd);
+    })
+    .catch((error) => console.log(error));
   render();
 });
 
