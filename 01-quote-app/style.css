@@ -1,0 +1,33 @@
+html {
+  box-sizing: border-box;
+  font-size: 20px;
+}
+
+*,
+*::before,
+*:after {
+  box-sizing: inherit;
+}
+
+body {
+  display: flexbox;
+  flex-direction: column;
+}
+
+header {
+  display: inline-flex;
+}
+
+button {
+  font-size: 2rem;
+  color: white;
+  background-color: blue;
+  margin-left: 25rem;
+  border-radius: 0.3rem;
+}
+
+#quote {
+  font-family: monospace;
+  font-weight: bold;
+  font-size: 2rem;
+}
